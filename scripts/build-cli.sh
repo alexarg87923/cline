@@ -60,3 +60,9 @@ cp cli/bin/cline dist-standalone/bin/cline-${OS}-${ARCH}
 cp cli/bin/cline-host dist-standalone/bin/cline-host
 cp cli/bin/cline-host dist-standalone/bin/cline-host-${OS}-${ARCH}
 echo "Copied binaries to dist-standalone/bin/ (both generic and platform-specific names)"
+
+# Copy binaries to embedded-copilot project
+mkdir -p ../embedded-copilot/bin
+cp cli/bin/cline-host ../embedded-copilot/bin/
+cp cli/bin/cline ../embedded-copilot/bin/
+echo "Copied binaries to embedded-copilot/bin/"

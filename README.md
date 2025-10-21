@@ -1,146 +1,203 @@
-<div align="center"><sub>
-English | <a href="https://github.com/cline/cline/blob/main/locales/es/README.md" target="_blank">Español</a> | <a href="https://github.com/cline/cline/blob/main/locales/de/README.md" target="_blank">Deutsch</a> | <a href="https://github.com/cline/cline/blob/main/locales/ja/README.md" target="_blank">日本語</a> | <a href="https://github.com/cline/cline/blob/main/locales/zh-cn/README.md" target="_blank">简体中文</a> | <a href="https://github.com/cline/cline/blob/main/locales/zh-tw/README.md" target="_blank">繁體中文</a> | <a href="https://github.com/cline/cline/blob/main/locales/ko/README.md" target="_blank">한국어</a>
-</sub></div>
+# Cline
 
-# Cline – \#1 on OpenRouter
+AI-powered coding assistant that can be run locally through CLI.
 
-<p align="center">
-  <img src="https://media.githubusercontent.com/media/cline/cline/main/assets/docs/demo.gif" width="100%" />
-</p>
+## Prerequisites
 
-<div align="center">
-<table>
-<tbody>
-<td align="center">
-<a href="https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev" target="_blank"><strong>Download on VS Marketplace</strong></a>
-</td>
-<td align="center">
-<a href="https://discord.gg/cline" target="_blank"><strong>Discord</strong></a>
-</td>
-<td align="center">
-<a href="https://www.reddit.com/r/cline/" target="_blank"><strong>r/cline</strong></a>
-</td>
-<td align="center">
-<a href="https://github.com/cline/cline/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop" target="_blank"><strong>Feature Requests</strong></a>
-</td>
-<td align="center">
-<a href="https://docs.cline.bot/getting-started/for-new-coders" target="_blank"><strong>Getting Started</strong></a>
-</td>
-</tbody>
-</table>
-</div>
+- **Go** - [https://go.dev/doc/install](https://go.dev/doc/install)
 
-Meet Cline, an AI assistant that can use your **CLI** a**N**d **E**ditor.
+- **Node.js** - [https://nodejs.org/en/download](https://nodejs.org/en/download)
+- **Claude API Key** from Anthropic
 
-Thanks to [Claude Sonnet's agentic coding capabilities](https://www.anthropic.com/claude/sonnet), Cline can handle complex software development tasks step-by-step. With tools that let him create & edit files, explore large projects, use the browser, and execute terminal commands (after you grant permission), he can assist you in ways that go beyond code completion or tech support. Cline can even use the Model Context Protocol (MCP) to create new tools and extend his own capabilities. While autonomous AI scripts traditionally run in sandboxed environments, this extension provides a human-in-the-loop GUI to approve every file change and terminal command, providing a safe and accessible way to explore the potential of agentic AI.
+## Setup Instructions
 
-1. Enter your task and add images to convert mockups into functional apps or fix bugs with screenshots.
-2. Cline starts by analyzing your file structure & source code ASTs, running regex searches, and reading relevant files to get up to speed in existing projects. By carefully managing what information is added to context, Cline can provide valuable assistance even for large, complex projects without overwhelming the context window.
-3. Once Cline has the information he needs, he can:
-    - Create and edit files + monitor linter/compiler errors along the way, letting him proactively fix issues like missing imports and syntax errors on his own.
-    - Execute commands directly in your terminal and monitor their output as he works, letting him e.g., react to dev server issues after editing a file.
-    - For web development tasks, Cline can launch the site in a headless browser, click, type, scroll, and capture screenshots + console logs, allowing him to fix runtime errors and visual bugs.
-4. When a task is completed, Cline will present the result to you with a terminal command like `open -a "Google Chrome" index.html`, which you run with a click of a button.
+### 1. Install Dependencies
 
-> [!TIP]
-> Use the `CMD/CTRL + Shift + P` shortcut to open the command palette and type "Cline: Open In New Tab" to open the extension as a tab in your editor. This lets you use Cline side-by-side with your file explorer, and see how he changes your workspace more clearly.
+Navigate to the cline directory and install all dependencies:
 
----
+```bash
+cd cline_repo
+npm run install:all
+```
 
-<img align="right" width="340" src="https://github.com/user-attachments/assets/3cf21e04-7ce9-4d22-a7b9-ba2c595e88a4">
+### 2. Build Protocol Buffers
 
-### Use any API and Model
+Generate the protocol buffer files:
 
-Cline supports API providers like OpenRouter, Anthropic, OpenAI, Google Gemini, AWS Bedrock, Azure, GCP Vertex, Cerebras and Groq. You can also configure any OpenAI compatible API, or use a local model through LM Studio/Ollama. If you're using OpenRouter, the extension fetches their latest model list, allowing you to use the newest models as soon as they're available.
+```bash
+npm run protos
+npm run protos-go
+```
 
-The extension also keeps track of total tokens and API usage cost for the entire task loop and individual requests, keeping you informed of spend every step of the way.
+**Important Note for Mac Users:** If this is your first time running `npm run protos-go` after installing Go, the command will likely fail because Go's bin directory is not in your PATH. The error output will provide the exact PATH line you need. Follow these steps:
 
-<!-- Transparent pixel to create line break after floating image -->
+1. **Run the command and check the error output**. Look for a section that says:
+   ```
+   To fix this, add your Go bin directory to your PATH:
+     Add this to your shell profile (~/.bashrc, ~/.zshrc, etc.):
+     export PATH="$PATH:/Users/yourusername/go/bin"
+   ```
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+2. **Copy the export line** from your error output (it will show your actual path)
 
-<img align="left" width="370" src="https://github.com/user-attachments/assets/81be79a8-1fdb-4028-9129-5fe055e01e76">
+3. **Add it to your shell configuration:**
+   ```bash
+   # For zsh (default on newer macOS)
+   nano ~/.zshrc
+   
+   # For bash
+   nano ~/.bashrc
+   ```
 
-### Run Commands in Terminal
+4. **Paste the export line** at the end of the file (e.g., `export PATH="$PATH:/Users/yourusername/go/bin"`)
 
-Thanks to the new [shell integration updates in VSCode v1.93](https://code.visualstudio.com/updates/v1_93#_terminal-shell-integration-api), Cline can execute commands directly in your terminal and receive the output. This allows him to perform a wide range of tasks, from installing packages and running build scripts to deploying applications, managing databases, and executing tests, all while adapting to your dev environment & toolchain to get the job done right.
+5. **Save and exit** (in nano: Ctrl+X, then Y, then Enter)
 
-For long running processes like dev servers, use the "Proceed While Running" button to let Cline continue in the task while the command runs in the background. As Cline works he’ll be notified of any new terminal output along the way, letting him react to issues that may come up, such as compile-time errors when editing files.
+6. **Reload your shell configuration:**
+   ```bash
+   # For zsh
+   source ~/.zshrc
+   
+   # For bash
+   source ~/.bashrc
+   ```
 
-<!-- Transparent pixel to create line break after floating image -->
+7. **Run the command again:**
+   ```bash
+   npm run protos-go
+   ```
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+This time it should complete successfully.
 
-<img align="right" width="400" src="https://github.com/user-attachments/assets/c5977833-d9b8-491e-90f9-05f9cd38c588">
+### 3. Compile CLI and Standalone
 
-### Create and Edit Files
+Build the CLI tool and standalone version:
 
-Cline can create and edit files directly in your editor, presenting you a diff view of the changes. You can edit or revert Cline's changes directly in the diff view editor, or provide feedback in chat until you're satisfied with the result. Cline also monitors linter/compiler errors (missing imports, syntax errors, etc.) so he can fix issues that come up along the way on his own.
+```bash
+npm run compile-cli
+npm run compile-standalone
+```
 
-All changes made by Cline are recorded in your file's Timeline, providing an easy way to track and revert modifications if needed.
+### 4. Configure API Key
 
-<!-- Transparent pixel to create line break after floating image -->
+Create the secrets configuration file at `~/.cline/data/secrets.json`:
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+```json
+{
+  "apiKey": "your_claude_api_key_here"
+}
+```
 
-<img align="left" width="370" src="https://github.com/user-attachments/assets/bc2e85ba-dfeb-4fe6-9942-7cfc4703cbe5">
+### 5. Add CLI to PATH
 
-### Use the Browser
+#### Mac/Linux
 
-With Claude Sonnet's new [Computer Use](https://www.anthropic.com/news/3-5-models-and-computer-use) capability, Cline can launch a browser, click elements, type text, and scroll, capturing screenshots and console logs at each step. This allows for interactive debugging, end-to-end testing, and even general web use! This gives him autonomy to fixing visual bugs and runtime issues without you needing to handhold and copy-pasting error logs yourself.
+1. Open your shell configuration file:
+   ```bash
+   # For zsh (default on newer macOS)
+   nano ~/.zshrc
+   
+   # For bash
+   nano ~/.bashrc
+   ```
 
-Try asking Cline to "test the app", and watch as he runs a command like `npm run dev`, launches your locally running dev server in a browser, and performs a series of tests to confirm that everything works. [See a demo here.](https://x.com/sdrzn/status/1850880547825823989)
+2. Add the following line (replace `/full/path/to` with your actual path):
+   ```bash
+   export PATH="$PATH:/full/path/to/cline/cli/bin"
+   ```
 
-<!-- Transparent pixel to create line break after floating image -->
+3. Save the file and reload your configuration:
+   ```bash
+   # For zsh
+   source ~/.zshrc
+   
+   # For bash
+   source ~/.bashrc
+   ```
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+#### Windows
 
-<img align="right" width="350" src="https://github.com/user-attachments/assets/ac0efa14-5c1f-4c26-a42d-9d7c56f5fadd">
+1. Open **System Properties**:
+   - Press `Win + X` and select **System**
+   - Click **Advanced system settings**
+   - Click **Environment Variables**
 
-### "add a tool that..."
+2. Under **User variables** or **System variables**, find and select **Path**, then click **Edit**
 
-Thanks to the [Model Context Protocol](https://github.com/modelcontextprotocol), Cline can extend his capabilities through custom tools. While you can use [community-made servers](https://github.com/modelcontextprotocol/servers), Cline can instead create and install tools tailored to your specific workflow. Just ask Cline to "add a tool" and he will handle everything, from creating a new MCP server to installing it into the extension. These custom tools then become part of Cline's toolkit, ready to use in future tasks.
+3. Click **New** and add the full path to the CLI binary:
+   ```
+   C:\full\path\to\cline\cli\bin
+   ```
 
--   "add a tool that fetches Jira tickets": Retrieve ticket ACs and put Cline to work
--   "add a tool that manages AWS EC2s": Check server metrics and scale instances up or down
--   "add a tool that pulls the latest PagerDuty incidents": Fetch details and ask Cline to fix bugs
+4. Click **OK** to save and close all dialogs
 
-<!-- Transparent pixel to create line break after floating image -->
+5. Restart your terminal/command prompt for changes to take effect
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+### 6. Run Cline Host
 
-<img align="left" width="360" src="https://github.com/user-attachments/assets/7fdf41e6-281a-4b4b-ac19-020b838b6970">
+Open a terminal and start the Cline host server:
 
-### Add Context
+```bash
+./cli/bin/cline-host --port 26041 --verbose
+```
 
-**`@url`:** Paste in a URL for the extension to fetch and convert to markdown, useful when you want to give Cline the latest docs
+Keep this terminal running.
 
-**`@problems`:** Add workspace errors and warnings ('Problems' panel) for Cline to fix
+### 7. Run Cline Core
 
-**`@file`:** Adds a file's contents so you don't have to waste API requests approving read file (+ type to search files)
+Open a **second terminal** and start the Cline core:
 
-**`@folder`:** Adds folder's files all at once to speed up your workflow even more
+```bash
+cd dist-standalone
+node cline-core.js
+```
 
-<!-- Transparent pixel to create line break after floating image -->
+Keep this terminal running as well.
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+## Usage
 
-<img align="right" width="350" src="https://github.com/user-attachments/assets/140c8606-d3bf-41b9-9a1f-4dbf0d4c90cb">
+Once both the host and core are running without errors, you can use Cline through the CLI:
 
-### Checkpoints: Compare and Restore
+### Create a New Task
 
-As Cline works through a task, the extension takes a snapshot of your workspace at each step. You can use the 'Compare' button to see a diff between the snapshot and your current workspace, and the 'Restore' button to roll back to that point.
+```bash
+cline task new "name of task" \
+  -s act-mode-api-provider=anthropic \
+  -s act-mode-api-model-id=claude-sonnet-4.5
+```
 
-For example, when working with a local web server, you can use 'Restore Workspace Only' to quickly test different versions of your app, then use 'Restore Task and Workspace' when you find the version you want to continue building from. This lets you safely explore different approaches without losing progress.
+### Send a Prompt
 
-<!-- Transparent pixel to create line break after floating image -->
+```bash
+cline task send "your prompt"
+```
 
-<img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
+### Follow Task Progress
 
-## Contributing
+```bash
+cline task follow
+```
 
-To contribute to the project, start with our [Contributing Guide](CONTRIBUTING.md) to learn the basics. You can also join our [Discord](https://discord.gg/cline) to chat with other contributors in the `#contributors` channel. If you're looking for full-time work, check out our open positions on our [careers page](https://cline.bot/join-us)!
+### Auto-Approve Commands
 
-## License
+```bash
+cline task -a true
+```
 
-[Apache 2.0 © 2025 Cline Bot Inc.](./LICENSE)
+## Project Structure
+
+- `cli/` - CLI tool implementation
+- `dist-standalone/` - Standalone compiled version
+- `proto/` - Protocol buffer definitions
+- `src/` - Source code
+- `webview-ui/` - Web interface components
+
+## Troubleshooting
+
+- Ensure both the host and core are running before executing CLI commands
+- Verify your API key is correctly configured in `~/.cline/data/secrets.json`
+- Check that the CLI binary path is correctly added to your PATH
+- If you encounter permission issues on Mac/Linux, you may need to make the CLI binary executable:
+  ```bash
+  chmod +x ./cli/bin/cline-host
+  ```
