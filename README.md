@@ -161,7 +161,7 @@ Once both the host and core are running without errors, you can use Cline throug
 ### Create a New Task
 
 ```bash
-cline task new "name of task" \
+cline task new "create hello world in RUST" \
   -s act-mode-api-provider=anthropic \
   -s act-mode-api-model-id=claude-sonnet-4.5
 ```
